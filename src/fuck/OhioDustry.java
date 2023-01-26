@@ -25,10 +25,11 @@ public class OhioDustry extends Plugin {
             if (m.find() || player.name.contains("discord.gg") || player.name.contains("discordapp.com")) {
                 try{
                 player.con.kick("You have been kicked for having a inappropriate name.");
+                /*
                 Vars.net.handleServer(Packets.ConnectPacket.class, (con, packet) -> {
                     con.kicked = true;
                     con.close();
-                });
+                });*/
                 } catch (Exception e){
                     Log.err("<OhioDustry> ", e);
                 }
@@ -42,10 +43,11 @@ public class OhioDustry extends Plugin {
                 count = 0;
                 try {
                     player.con.kick("You have been kicked for having too many connections.");
-                    Vars.net.handleServer(Packets.ConnectPacket.class, (con, packet) -> {
+                    Log.warn("Kicked " + player.name + " for possible botting.");
+                    /*Vars.net.handleServer(Packets.ConnectPacket.class, (con, packet) -> {
                         con.kicked = true;
                         con.close();
-                    });
+                    });*/
                 } catch (Exception e) {
                     Log.err("<OhioDustry> ", e);
                 }
