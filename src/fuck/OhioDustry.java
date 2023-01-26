@@ -1,6 +1,7 @@
 package fuck;
 
 import arc.Events;
+import arc.util.Log;
 import mindustry.Vars;
 import mindustry.game.EventType.PlayerConnect;
 import mindustry.gen.Groups;
@@ -12,25 +13,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OhioDustry extends Plugin {
+    private static final Pattern DISC = Pattern.compile("discord\\\\.gg/\\\\w+|<@!|&\\\\d{15,}>|@everyone|here", Pattern.CASE_INSENSITIVE);
 
     @Override
     public void init() {
         Events.on(PlayerConnect.class, event -> {
             Player player = event.player;
             int count = 0;
-            String pattern = "(https?://)?(www\\.)?(discord\\.(gg|io|me|li)|discordapp\\.com/invite)/.+[a-z]";
-            Pattern r = Pattern.compile(pattern);
-            Matcher m = r.matcher(player.name);
+            Matcher m = DISC.matcher(player.name);
 
             if (m.find() || player.name.contains("discord.gg") || player.name.contains("discordapp.com")) {
                 try{
-                player.con.kick("You have been kicked for having a discord link in your name.");
+                player.con.kick("You have been kicked for having a inappropriate name.");
                 Vars.net.handleServer(Packets.ConnectPacket.class, (con, packet) -> {
                     con.kicked = true;
                     con.close();
                 });
                 } catch (Exception e){
-                    e.printStackTrace();
+                    Log.err("<OhioDustry> ", e);
                 }
             }
             for (Player other : Groups.player) {
@@ -39,6 +39,7 @@ public class OhioDustry extends Plugin {
                 }
             }
             if (count >= 5) {
+                count = 0;
                 try {
                     player.con.kick("You have been kicked for having too many connections.");
                     Vars.net.handleServer(Packets.ConnectPacket.class, (con, packet) -> {
@@ -46,7 +47,7 @@ public class OhioDustry extends Plugin {
                         con.close();
                     });
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.err("<OhioDustry> ", e);
                 }
             }
         });
