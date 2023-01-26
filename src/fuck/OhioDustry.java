@@ -1,15 +1,13 @@
 package fuck;
 
-import arc.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.game.EventType.*;
-import mindustry.gen.*;
-import mindustry.mod.*;
-import mindustry.net.Administration.*;
+import arc.Events;
+import mindustry.Vars;
+import mindustry.game.EventType.PlayerConnect;
+import mindustry.gen.Groups;
+import mindustry.gen.Player;
+import mindustry.mod.Plugin;
 import mindustry.net.Packets;
-import mindustry.world.blocks.storage.*;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
