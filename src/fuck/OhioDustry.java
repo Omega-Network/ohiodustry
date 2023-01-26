@@ -8,7 +8,10 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.mod.*;
 import mindustry.net.Administration.*;
+import mindustry.net.Packets;
 import mindustry.world.blocks.storage.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OhioDustry extends Plugin {
 
@@ -17,14 +20,26 @@ public class OhioDustry extends Plugin {
         Events.on(PlayerConnect.class, event -> {
             Player player = event.player;
             int count = 0;
+            String pattern = "(https?:\\/\\/)?(www\\.)?(discord\\.(gg|io|me|li)|discordapp\\.com\\/invite)\\/.+[a-z]";
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(player.name);
+
+            if (m.find()){
+                Vars.net.handleServer(Packets.ConnectPacket.class, (con, packet) -> {
+                    con.kicked = true;
+                    con.close();
+                });
+            }
             for (Player other : Groups.player) {
                 if (other.con.address.equals(player.con.address)) {
                     count++;
                 }
             }
             if (count >= 5) {
-                player.con.kick("You have been kicked for having too many accounts.");
-                Log.info("Kicked player @ for having too many accounts.", player.name);
+                Vars.net.handleServer(Packets.ConnectPacket.class, (con, packet) -> {
+                    con.kicked = true;
+                    con.close();
+                });
             }
         });
     }
