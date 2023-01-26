@@ -23,10 +23,7 @@ jobs:
         name: ${{ github.event.repository.name }}
         path: build/libs/${{ github.event.repository.name }}.jar
     - name: Generate Release Hashes
-      uses: MCJack123/ghaction-Generate-Release-Hashes@v4
-      with:
-       hash-type: sha256
-       file-name: hashes.txt
+      run: sha1sum build/libs/${{ github.event.repository.name }}.jar > hashes.txt
     - uses: actions/upload-artifact@v2
       with:
        name: Asset Hashes
